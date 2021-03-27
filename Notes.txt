@@ -1,0 +1,39 @@
+Docker Container shares the underlying kernel. 
+
+Each Docker Containers has the additional softwares that makes the Operating Systems different and Docker utilizes the underlying 
+kernel of docker hosts which works with all the operating systems above.
+
+We won't be able to run a windows based container on a docker host as linux os on it. For that we would require a Docker on a Windows Server. 
+
+The main purpose of Docker is to containerize applications, to ship them and run them.
+
+Incase of docker we have the underlying hardware infrastructure, then the OS, and then Docker installed on the OS. Docker can then manage the containers
+that run libraries and dependencies alone. 
+
+Incase of Virtual Machines we will have the OS on the underlying hardware and then the hypervisor like ESX and then the Virtual Machines. Each Virtual Machines
+will have independent Operating Systems inside of it. And then the dependencies and then the applications. This overheads causes higher utilization of underlying resources
+as there are multiple virtual operating systems and kernels running. The Virtual Machine consumes higher disk space as each VM takes up GBs. 
+
+Docker Container can boot up faster, where as Virtual Machines boots up considerably slower as it boots up the entire operating system. 
+
+VM has complete isolation from each other but docker do not have complete isolation as resources are shared. 
+
+An Image is a template. It is used to create one or more containers. 
+
+Container are running instances of images that are isolated and have their own environments and sets of processes. 
+
+With Docker a major portion of works involved in setting up the infrastructure is now in the hands of the developers in the form of a Dockerfile. 
+
+The whole process of automatically deploying and managing containers is known as containers orchestration. 
+
+Kubernetes is a container orchestration technology. It is a bit difficult to setup and get started but provides a lot of options to customize deployments
+and supports complex architectures. 
+
+Through Container orchestration, our applicable is now highly available as hardware failures do not bring our applications down, 
+because we have multiple instances of our applications running on different nodes. The user traffic is load balanced across the various containers. 
+
+When demand increases, deploy more instances of the applications seemlessly and within a matter of seconds and we have the ability to do that at a service level.
+
+When we run out of hardware resources, scale the number of underlying nodes up or down without having to take down the application. And do all these with declarative
+object configuration files. 
+
