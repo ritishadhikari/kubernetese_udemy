@@ -37,3 +37,55 @@ When demand increases, deploy more instances of the applications seemlessly and 
 When we run out of hardware resources, scale the number of underlying nodes up or down without having to take down the application. And do all these with declarative
 object configuration files. 
 
+A node is a machine, physical or virtual where kubernetes is installed. A node is a worker machine, and that is where a container will be launched by kubernetes.
+
+A cluster is a set of nodes grouped togather. In this way, even if one node failes, we still have our cluster accessible from the other nodes. 
+
+Having multiple nodes helps in sharing as well. 
+
+The master is another node where kubernetes is installed in it and is configured as a master. The master watches over the nodes in the cluster, and is responsible
+for the actual orchestration of the containers on the worker nodes. 
+
+When we are installing kubernetes on a system, we are actually installing the following components: 
+-API server: Acts as the frontend for kubernetes. The users, management devices, command line interfaces all talk to the API server to interact with the 
+kubernetes cluster.
+-etcd service: Distributed, reliable key-value store to store data to manage the cluster. It is responsible for implementing locks within the cluster,
+to ensure there are no conflicts within the masters.
+-kubelet service: It is the agent that runs on each nodes in the cluster. It is  responsible for making sure that the containers are running on the nodes
+as expected. 
+-container runtime: It is the underlying software that is used to run containers. Happens to be docker. 
+-controller: Brain behind the orchestration. They are responsible for noticing and responding when nodes, containers or endpoint goes down. It makes decisions
+to bring up new containers in such cases. 
+-scheduler: It is responsible for distributing work or containers across multiple nodes. It looks for newly created containers and assigns them to nodes. 
+
+The workers nodes is where the containers are hosted. The master server has the cube API server and that is what makes it a master. The worker nodes
+have the kubelet agent which is responsible for interacting with the master to provide the health information of the worker nodes and carry out actions requested
+by the master on the worker nodes. 
+
+All the information gathered are stored in the key-value pair stored in the master which is based on the etcd framework. 
+
+The master also has the controller and the scheduler.
+
+kubectl is a command line tool also called kube-control. This tool is used to manage and deploy application on a kubernetes cluster. It is used to get the 
+cluster information, to get the status of other nodes in the cluster and to manage many other things. 
+
+The kubectl run hello-minikube command is used to deploy an application on the cluster. 
+
+The kubectl cluster-info command is used to view information about the cluster. 
+
+The kubectl get nodes command is used to list all the nodes part of the cluster.
+
+Minikube is the easiest way to get started with Kubernetes on a local system. 
+
+It would take a lot of time to setup and install the master and the worker nodes with the above components on different systems individually by ourselves. 
+
+Minukube bundles all of this different components into a single image providing us a preconfigured single node kubernetes cluster which we can get started
+in a matter of minutes. It is packages into an ISO image and is available online for download. 
+
+Minikube provides an executable command line utility that will automatically download the ISO and deploy it on virtualization platforms such as Virtual Box or
+VMWare fusion. Hence we must have an Hypervisor installed on our system. To interact with the kubernetes cluster, we must have the kubectl kubernetes tool also 
+installed on our machine. 
+
+kubeadm is used for setting up a multi-node Kubernetes cluster in a local environment. 
+
+	
