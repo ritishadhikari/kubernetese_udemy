@@ -103,7 +103,42 @@ delete service hello-node: Delete the service. Not the deployment
 
 delete deployment hello-node: Delete the Deployment. 
 
+kubectl get nodes -o wide: Check the Version of Kubernetes installed. 
 
+With Kubernetes our ultimate aim is to deploy our applications on a set of machines that are configured as worker nodes in a cluster. 
 
+However Kubernetes does not deploy containers directly on worker nodes. The containers are encapsulated into a Kubernetes Object known as pods. 
 
+A pod is a single instance of an application. A Pod is the smallest object that can be created in Kubernetes. 
 
+When there are more loads we do not spin up new container instances on the same pod, but we create new pod altogather with a new instance of the same application. 
+
+When userbase further increases, and the current node does not have sufficient capacity, then we can deploy additional pods in a new node in the cluster. 
+
+We will have a new node in the cluster to expand the clusters physical capacity. 
+
+Pods usually have a one-one relationship with containers running your application. To scale up we create new pods, and to scale down, we delete existing pods. 
+
+A single pod can have multiple containers, except for the fact that they are usually not multiple containers of the same kind. 
+
+If our intention was to scale our application, then we would need to create additional pods.
+
+Incase we want a helper containers to live alongside our application container, then we can have both of these containers as part of the same pod. Both are 
+created togather and both are deleted togather. 
+
+The two containers in a same pod can also communicate with each other directly, by referring to each other as local host, since they share the same network space.
+Plus they can share the same storage space as well. 
+
+We just need to define Kubernetes what containers a pod consists of and the container in a pod by default will have access to the same storage, the same network namespace 
+and they will be created and destroyed togather. 
+
+kubectl run nginx --image nginx: Deploys a Docker Container by creating a pod. It first creates a pod automatically and deploys an instance of nginx docker image. 
+
+kubectl get pods: Helps us see the list of pods in our cluster. We also see the status of the pods - from container creating state to a running state when it is
+actually running. 
+
+kubectl describe pod nginx: Provides a lot more information compared to the get pods command. 
+
+kubectl get pods -o wide: Gives the information about the nodes where the pod is running. 
+
+Each Pod gets an internal IP of its own within the Kubernetes cluster. 
