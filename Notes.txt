@@ -88,4 +88,22 @@ installed on our machine.
 
 kubeadm is used for setting up a multi-node Kubernetes cluster in a local environment. 
 
-	
+A Kubernetes Deployment checks on the health of your Pod and restarts the Pod's Container if it terminates.
+
+kubectl create deployment hello-node --image=k8s.gcr.io/echoserver:1.4: Deploy a Kubernetes Container called hello-node by downloading the image
+k8s.gcr.io/echoserver:1.4
+
+kubectl get deployments: View the Deployments made till now. 
+
+kubectl expose deployment hello-node --type=LoadBalancer --port=8080: Expose the deployment that was created earlier through a particular port. 
+
+minikube service hello-node --url: Get the url where the service is running.  This will be a proof, that our  setup is working. 
+
+delete service hello-node: Delete the service. Not the deployment
+
+delete deployment hello-node: Delete the Deployment. 
+
+
+
+
+
