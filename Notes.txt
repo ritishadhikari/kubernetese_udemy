@@ -142,3 +142,38 @@ kubectl describe pod nginx: Provides a lot more information compared to the get 
 kubectl get pods -o wide: Gives the information about the nodes where the pod is running. 
 
 Each Pod gets an internal IP of its own within the Kubernetes cluster. 
+
+Json:
+Fruits:{[Banana:{Calories: 105,Fat: 0.4 g,Carbs: 27 g},
+		 Grape:{Calories: 62,Fat: 0.3 g, Carbs: 16 g}]}
+		 
+Yaml:
+Fruits:
+	- Banana:
+		Calories: 105
+		Fat: 0.4 g
+		Carbs: 27 g
+	- Grape: 
+		Calories: 62
+		Fat: 0.3 g
+		Carbs: 16 g
+
+
+Employee:
+  Name: Jacob
+  Sex: Male
+  Age: 30
+  Title: Systems Engineer
+  Projects:
+    - Automation
+    - Support
+  Payslips:
+    - Month: June
+      Wage: 4000
+	- Month: July
+      Wage: 4500
+	- Month: August
+      Wage: 4000
+	
+      
+
