@@ -39,7 +39,7 @@ object configuration files.
 
 A node is a machine, physical or virtual where kubernetes is installed. A node is a worker machine, and that is where a container will be launched by kubernetes.
 
-A cluster is a set of nodes grouped togather. In this way, even if one node failes, we still have our cluster accessible from the other nodes. 
+A cluster is a set of nodes grouped togather. In this way, even if one node fails, we still have our cluster accessible from the other nodes. 
 
 Having multiple nodes helps in sharing as well. 
 
@@ -174,6 +174,66 @@ Employee:
       Wage: 4500
 	- Month: August
       Wage: 4000
-	
-      
+
+Kubernetes uses yaml files as inputs for the creation of objects such as pods, replicas, deployments.
+
+A Kubernetes definition file always contains 4 top level fields:
+- apiVersion: Version of the kubernetes API we are using to create the objects.
+The maping for kind/apiVersion are: (POD,v1), (Service,v1), (ReplicaSet,apps/v1),(Deployments,apps/v1)
+- kind: The kind refers to the type of object we are trying to create which in this case happens to be a Pod/Service/ReplicaSet/Deployment.
+- metadata: The metadata is data about the object like its name, labels etc. This is in the form of a dictionary. 
+The name under metadata is a string value which is used to name your pod.
+The Label is a dictionary 
+- spec: This is where we would provide additional information to kubernetes pertaining to that object. This is going to be different for different objects.
+Spec is a dictionary. So we can add a property under it called containers which is list because a pod can have multiple containers within them. 
+
+
+once the yaml file is create, we can run 'kubectl create -f pod-defintion.yml'
+
+After this run 'kubectl get-pods' to see the list of pods available. 
+
+If for some reasons our application crashes and the pod fails? Then users will no longer be able to access our application. To prevent users from
+loosing our application, we would like to have more than one instance or pod running at the same time. That way if one fails, we would still 
+have our application running on the other one.
+
+The Replication controller, helps run multiple instances of a single pod in the Kubernetes Cluster, thus providing high availability. 
+
+Even you have a single pod, the replication controller can help by automatically bringing up a new pod when the existing one fails. 
+
+Thus the replication controller ensures that the specified number of pods are running at all times, even if it is just one or hundred. 
+
+Another reason for having replication controller is to create multiple pods to share the loads across them. If we have a single pod serving 
+a set of users, when the number of users increases, we deploy additional pods to balance the loads across the two pods. 
+
+We could deploy additional pods across the other nodes in the cluster. In this case, the replication controller helps balance the load
+across multiple pods on different nodes as well as scale our application when the demand increases. 
+
+ReplicaSet and Replication controller have similar purpose, but they are not the same. Replication Controller is an older technology
+which is substituted by the replica set. 
+
+ReplicaSet requires a selector definition. The Selector section helps the replica set what pods falls under it. ReplicaSet can also manage
+Pods that were not created as part of the replica set creation. 
+
+kubectl create -f .\rc-definition.yml command is used to run the replica controller pods. 
+
+kubectl get replicationcontroller: Command to get the status of the replication controller. 
+
+kubectl create -f .\replicaset-definition.yml command is used to run the replica set pods.
+
+A Replica Set is a process that monitors the pods. How does the replicaset know what pods to monitor. There could be hundreds of other pods in
+the cluster running different applications. This is where labelling of pods during creation comes in handy. We can now provide this labels as
+a filter for replicaset. This way the replica set knows which Pods to monitor. 
+
+Incase we want to increase our replica set then we can edit our yml file and change the number of replicas. And then use the below command: 
+kubectl replace -f .\replicaset-definition.yml. 
+
+Or we can write the below command without editing the yml file internally:
+kubectl scale --replicas 6 -f .\repliaset-definition.yml
+
+We can also write: kubectl edit replicaset myapp-replicaset to edit the number of pods and the new number of pods will run accordingly. 
+
+kubectl delete replicaset myapp-replicaset: Delete a Replicaset which was defined under metedata. 
+
+
+
 
