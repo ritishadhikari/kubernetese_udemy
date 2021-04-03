@@ -234,6 +234,15 @@ We can also write: kubectl edit replicaset myapp-replicaset to edit the number o
 
 kubectl delete replicaset myapp-replicaset: Delete a Replicaset which was defined under metedata. 
 
+Deployment is a Kubernetes object that comes higher in the hierarchy. The deployment provides us with thw capability
+to upgrade the underlying instances seamlessly using rolling updates, undue changes, resume 
+changes as required. 
+
+kubectl create -f .\deployment-definition.yml to deploy the kubernetes yml file. 
+
+kubectl get deployments: to get the deployment status after deploying the yml file.   
+
+we can also use kubectl scale deployment --replicas=3 for scaling with the replica set.
 
 
 
