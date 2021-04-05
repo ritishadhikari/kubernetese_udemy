@@ -244,5 +244,133 @@ kubectl get deployments: to get the deployment status after deploying the yml fi
 
 we can also use kubectl scale deployment --replicas=3 for scaling with the replica set.
 
+When we first create a deployment, it triggers a rollout. A new rollout creates a new deployment 
+revision.  This helps us keep track of the changes in our deployment and enables us to 
+rollback to previous versions of deployment if necessary.
+
+kubectl rollout status deployment/myapp-deployment: Gives the status of our rollout.
+
+kubectl rollout history deployment/myapp-deployment: Shows the history of our deployment. 
+
+There are two types of deployment strategies: 
+i. Recreate Strategy: Destroy the n running old instances and then create the n new instances. 
+The time period between when the older versions are down and newer versions are up, the application
+is down and is inacsessible to the users. This is not the default strategy. 
+ii. Rolling Update: We do not destroy all the n old instances at once. We take down the older version 
+and bring up the newer version one by one. This way the application never goes down and the 
+application is seamless. 
+
+we update the strategy through: kubectl apply -f deployment-definition.yml
+With this a new rollout is triggered and a new revision of the deployment is created. 
+
+We can also do the revision through: kubectl set image deployment/myapp-deployment nginx=nginx:1.9.1
+This way the deploymment definition file will have a different configuration. 
+
+Upgrade: When a new deployment is created, it creates a replica set automatically, which in turn creates
+the number of pods which in turn meets the number of replicas. 
+
+When we upgrade the application, the kubernetes deployment object creates a new replica set under 
+the hood, and starts deploying the container there, and at the same time taking down the pod in the
+old replica set following a rolling update strategy. 
+
+Kubernetes deployment allow you to rollback to a previous revision. 
+
+kubectl rollout undo deployment/myapp-deployment: To undo a change, by bringing the older pods up and running
+while destroying the newer pods. 
+
+Check which replica is down and which replica is up through: kubectl get replicasets
+
+kubectl create -f .\deployment.yml --record=: We can record our deployments throught his command.
+
+kubectl set image deployment myapp-deployment nginx=nginx:1.18-perl --record: To update the deployment
+and also record through another way. 
+
+In the Kubernetes world, the IP is assigned to a Pod and not a container.
+
+Each Pod in Kubernetes gets its own internal IP Address. 
+
+The pods communicate with each other through the parent IP. 
+
+The internal IP address, which connects multiple pods in a specific node, for two different node is same.
+
+But if two pods in two different nodes has the same IP address, then it leads to IP conflicts. 
+
+Kubernetes does not automatically setup any kind of networking to handle these issues. 
+
+Kuberenetes expects manual intervention to setup certain fundamental requirements.
+
+NAT (Network Address Translation) translates one set of IP adresses into another set of IP addresses. 
+It translates from Private to Public and also from Public to Private IP addresses. 
+
+All containers/PODs can communicate to one another without NAT.
+
+All nodes can communicate with all containers and vice-versa without NAT.
+
+Some pre built networks helps for this cause. Ex. Cilium, Flannel, etc. 
+
+Hence with all the above mentioned cluster networking setup, it now manages the networks and IPs in the
+nodes and assigns it different network address for each network in the node.
+
+This creates a virtual network of all pods and nodes where they are all assigned a unique IP address, and by using simple routing 
+techniques, the cluster networking enables communication between the different pods or nodes to meet the networking requirements of kubernetes.
 
 
+Kubernetes Services enables communication between within and outside of the application. 
+
+Kubernetes services helps connect applications togather with other applications or users. 
+
+It is services that enables connectivity between groups of pods. 
+
+Services enables loose coupling between microservices in our application. 
+
+The Kubernetes Service is an object just like pods, replica sets or deployments, one of its use case is 
+to listen to a port on the node and forward request on that port to a pod running the web application. 
+
+This type of service is known as node port service, because the service listens to a port 
+on the node and forward requests to the pod.
+
+Types of Services: 
+1. NodePort: Service makes an internal pod accessible on a port on the node. 
+2. ClusterIP: The service creates a virtual IP inside the cluster to enable communication between different
+services, such as a set of front end servers to a set of back end servers. 
+3. Load Balancer: Provisions a Load Balancer for our application in supported cloud providers. 
+
+NodePort Kuberenetes Service: 
+Three Ports involves. 
+a. Port on the Pod: Port where the actual web server is running. Referred to as the target port.  
+b. Port on the Service: Referred to as the Port. Service is like a virtual server inside the node. 
+c. Port on the Node: We access the webserver externally. Known as the Node Port. Node Port can be 
+within a valid range of 30000 to 32767 only. 
+
+
+We use a definition file to create a service. 
+
+kubectl create -f service-definition.yml:  Execute the yml file to enable the service.
+
+kubectl get services: Get the list of running services. 
+
+In a production environment, we have multiple instances of our web application running for high availability
+and load balancing purposes. In this case we have multiple singular pods, running our web application. 
+
+All the pods have the same labels, the key app and set to a value myapp.
+
+The same label is used as a selector during the creation of the service. 
+
+When the service is created, it looks for a matching pod with the label and finds n of them. 
+
+The Service then automatically selects n pods as endpoints to forward the requests coming from the 
+external users. 
+
+When the pods are distributed across multiple nodes, Kubernetes automatically creates a service that 
+spans across all the nodes in the cluster and maps the target port to the same node port on all the
+nodes in the cluster.
+
+This way you can access your application using the IP of any node in the cluster
+and using the same port number of the node. 
+
+minikube service myapp-service --url: Return the URL for the service.
+
+In the rear end of the pod there is a redis server. 
+
+A kubernetes service can help group the pods togather and provide a single interface to access the pods in a
+group. 
