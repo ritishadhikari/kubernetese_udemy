@@ -7,12 +7,13 @@ We won't be able to run a windows based container on a docker host as linux os o
 
 The main purpose of Docker is to containerize applications, to ship them and run them.
 
-Incase of docker we have the underlying hardware infrastructure, then the OS, and then Docker installed on the OS. Docker can then manage the containers
-that run libraries and dependencies alone. 
+Incase of docker we have the underlying hardware infrastructure, then the OS, and then Docker installed on the OS. Docker can then manage the 
+containers that run libraries and dependencies alone. 
 
-Incase of Virtual Machines we will have the OS on the underlying hardware and then the hypervisor like ESX and then the Virtual Machines. Each Virtual Machines
-will have independent Operating Systems inside of it. And then the dependencies and then the applications. This overheads causes higher utilization of underlying resources
-as there are multiple virtual operating systems and kernels running. The Virtual Machine consumes higher disk space as each VM takes up GBs. 
+Incase of Virtual Machines we will have the OS on the underlying hardware and then the hypervisor like ESX and then the Virtual Machines. 
+Each Virtual Machines will have independent Operating Systems inside of it. And then the dependencies and then the applications. 
+This overheads causes higher utilization of underlying resources as there are multiple virtual operating systems and kernels running. 
+The Virtual Machine consumes higher disk space as each VM takes up GBs. 
 
 Docker Container can boot up faster, where as Virtual Machines boots up considerably slower as it boots up the entire operating system. 
 
@@ -26,18 +27,20 @@ With Docker a major portion of works involved in setting up the infrastructure i
 
 The whole process of automatically deploying and managing containers is known as containers orchestration. 
 
-Kubernetes is a container orchestration technology. It is a bit difficult to setup and get started but provides a lot of options to customize deployments
-and supports complex architectures. 
+Kubernetes is a container orchestration technology. It is a bit difficult to setup and get started but provides a lot of options to customize 
+deployments and supports complex architectures. 
 
-Through Container orchestration, our applicable is now highly available as hardware failures do not bring our applications down, 
+Through Container orchestration, our application is now highly available as hardware failures do not bring our applications down, 
 because we have multiple instances of our applications running on different nodes. The user traffic is load balanced across the various containers. 
 
-When demand increases, deploy more instances of the applications seemlessly and within a matter of seconds and we have the ability to do that at a service level.
+When demand increases, deploy more instances of the applications seemlessly and within a matter of seconds and we have the ability to do that 
+at a service level.
 
-When we run out of hardware resources, scale the number of underlying nodes up or down without having to take down the application. And do all these with declarative
-object configuration files. 
+When we run out of hardware resources, scale the number of underlying nodes up or down without having to take down the application. 
+And do all these with declarative object configuration files. 
 
-A node is a machine, physical or virtual where kubernetes is installed. A node is a worker machine, and that is where a container will be launched by kubernetes.
+A node is a machine, physical or virtual where kubernetes is installed. A node is a worker machine, and that is where a container will be 
+launched by kubernetes.
 
 A cluster is a set of nodes grouped togather. In this way, even if one node fails, we still have our cluster accessible from the other nodes. 
 
@@ -51,7 +54,7 @@ When we are installing kubernetes on a system, we are actually installing the fo
 kubernetes cluster.
 -etcd service: Distributed, reliable key-value store to store data to manage the cluster. It is responsible for implementing locks within the cluster,
 to ensure there are no conflicts within the masters.
--kubelet service: It is the agent that runs on each nodes in the cluster. It is  responsible for making sure that the containers are running on the nodes
+-kubelet service: It is the agent that runs on each nodes in the cluster. It is responsible for making sure that the containers are running on the nodes
 as expected. 
 -container runtime: It is the underlying software that is used to run containers. Happens to be docker. 
 -controller: Brain behind the orchestration. They are responsible for noticing and responding when nodes, containers or endpoint goes down. It makes decisions
@@ -80,7 +83,7 @@ Minikube is the easiest way to get started with Kubernetes on a local system.
 It would take a lot of time to setup and install the master and the worker nodes with the above components on different systems individually by ourselves. 
 
 Minukube bundles all of this different components into a single image providing us a preconfigured single node kubernetes cluster which we can get started
-in a matter of minutes. It is packages into an ISO image and is available online for download. 
+in a matter of minutes. It is packaged into an ISO image and is available online for download. 
 
 Minikube provides an executable command line utility that will automatically download the ISO and deploy it on virtualization platforms such as Virtual Box or
 VMWare fusion. Hence we must have an Hypervisor installed on our system. To interact with the kubernetes cluster, we must have the kubectl kubernetes tool also 
@@ -97,7 +100,7 @@ kubectl get deployments: View the Deployments made till now.
 
 kubectl expose deployment hello-node --type=LoadBalancer --port=8080: Expose the deployment that was created earlier through a particular port. 
 
-minikube service hello-node --url: Get the url where the service is running.  This will be a proof, that our  setup is working. 
+minikube service hello-node --url: Get the url where the service is running.  This will be a proof, that our setup is working. 
 
 delete service hello-node: Delete the service. Not the deployment
 
@@ -111,28 +114,32 @@ However Kubernetes does not deploy containers directly on worker nodes. The cont
 
 A pod is a single instance of an application. A Pod is the smallest object that can be created in Kubernetes. 
 
-When there are more loads we do not spin up new container instances on the same pod, but we create new pod altogather with a new instance of the same application. 
+When there are more loads we do not spin up new container instances on the same pod, but we create new pod altogather with a new instance of the 
+same application. 
 
-When userbase further increases, and the current node does not have sufficient capacity, then we can deploy additional pods in a new node in the cluster. 
+When userbase further increases, and the current node does not have sufficient capacity, then we can deploy additional pods in a new node 
+in the cluster. 
 
 We will have a new node in the cluster to expand the clusters physical capacity. 
 
-Pods usually have a one-one relationship with containers running your application. To scale up we create new pods, and to scale down, we delete existing pods. 
+Pods usually have a one-one relationship with containers running your application. To scale up we create new pods, 
+and to scale down, we delete existing pods. 
 
 A single pod can have multiple containers, except for the fact that they are usually not multiple containers of the same kind. 
 
 If our intention was to scale our application, then we would need to create additional pods.
 
-Incase we want a helper containers to live alongside our application container, then we can have both of these containers as part of the same pod. Both are 
-created togather and both are deleted togather. 
+Incase we want a helper containers to live alongside our application container, then we can have both of these containers as part of the same pod. 
+Both are created togather and both are deleted togather. 
 
-The two containers in a same pod can also communicate with each other directly, by referring to each other as local host, since they share the same network space.
-Plus they can share the same storage space as well. 
+The two containers in a same pod can also communicate with each other directly, by referring to each other as local host, since they share the 
+same network space. Plus they can share the same storage space as well. 
 
-We just need to define Kubernetes what containers a pod consists of and the container in a pod by default will have access to the same storage, the same network namespace 
-and they will be created and destroyed togather. 
+We just need to define Kubernetes what containers a pod consists of and the container in a pod by default will have access to the same storage, 
+the same network namespace and they will be created and destroyed togather. 
 
-kubectl run nginx --image nginx: Deploys a Docker Container by creating a pod. It first creates a pod automatically and deploys an instance of nginx docker image. 
+kubectl run nginx --image nginx: Deploys a Docker Container by creating a pod. It first creates a pod automatically and deploys an instance of 
+nginx docker image. 
 
 kubectl get pods: Helps us see the list of pods in our cluster. We also see the status of the pods - from container creating state to a running state when it is
 actually running. 
@@ -144,8 +151,8 @@ kubectl get pods -o wide: Gives the information about the nodes where the pod is
 Each Pod gets an internal IP of its own within the Kubernetes cluster. 
 
 Json:
-Fruits:{[Banana:{Calories: 105,Fat: 0.4 g,Carbs: 27 g},
-		 Grape:{Calories: 62,Fat: 0.3 g, Carbs: 16 g}]}
+Fruits:[Banana:{Calories: 105,Fat: 0.4 g,Carbs: 27 g},
+		 Grape:{Calories: 62,Fat: 0.3 g, Carbs: 16 g}]
 		 
 Yaml:
 Fruits:
@@ -187,8 +194,7 @@ The Label is a dictionary
 - spec: This is where we would provide additional information to kubernetes pertaining to that object. This is going to be different for different objects.
 Spec is a dictionary. So we can add a property under it called containers which is list because a pod can have multiple containers within them. 
 
-
-once the yaml file is create, we can run 'kubectl create -f pod-defintion.yml'
+once the yaml file is created, we can run 'kubectl create -f pod-defintion.yml'
 
 After this run 'kubectl get-pods' to see the list of pods available. 
 
@@ -232,10 +238,10 @@ kubectl scale --replicas 6 -f .\repliaset-definition.yml
 
 We can also write: kubectl edit replicaset myapp-replicaset to edit the number of pods and the new number of pods will run accordingly. 
 
-kubectl delete replicaset myapp-replicaset: Delete a Replicaset which was defined under metedata. 
+kubectl delete replicaset myapp-replicaset: Delete a Replicaset which was defined under metadata. 
 
-Deployment is a Kubernetes object that comes higher in the hierarchy. The deployment provides us with thw capability
-to upgrade the underlying instances seamlessly using rolling updates, undue changes, resume 
+Deployment is a Kubernetes object that comes higher in the hierarchy. The deployment provides us with the capability
+to upgrade the underlying instances seamlessly using rolling updates, undue changes, resume
 changes as required. 
 
 kubectl create -f .\deployment-definition.yml to deploy the kubernetes yml file. 
@@ -260,7 +266,7 @@ ii. Rolling Update: We do not destroy all the n old instances at once. We take d
 and bring up the newer version one by one. This way the application never goes down and the 
 application is seamless. 
 
-we update the strategy through: kubectl apply -f deployment-definition.yml
+We update the strategy through: kubectl apply -f deployment-definition.yml
 With this a new rollout is triggered and a new revision of the deployment is created. 
 
 We can also do the revision through: kubectl set image deployment/myapp-deployment nginx=nginx:1.9.1
@@ -280,7 +286,7 @@ while destroying the newer pods.
 
 Check which replica is down and which replica is up through: kubectl get replicasets
 
-kubectl create -f .\deployment.yml --record=: We can record our deployments throught his command.
+kubectl create -f .\deployment.yml --record: We can record our deployments throught his command.
 
 kubectl set image deployment myapp-deployment nginx=nginx:1.18-perl --record: To update the deployment
 and also record through another way. 
@@ -313,7 +319,6 @@ nodes and assigns it different network address for each network in the node.
 
 This creates a virtual network of all pods and nodes where they are all assigned a unique IP address, and by using simple routing 
 techniques, the cluster networking enables communication between the different pods or nodes to meet the networking requirements of kubernetes.
-
 
 Kubernetes Services enables communication between within and outside of the application. 
 
@@ -363,14 +368,12 @@ external users.
 
 When the pods are distributed across multiple nodes, Kubernetes automatically creates a service that 
 spans across all the nodes in the cluster and maps the target port to the same node port on all the
-nodes in the cluster.
-
+nodes in the cluster. 
+ 
 This way you can access your application using the IP of any node in the cluster
-and using the same port number of the node. 
-
-minikube service myapp-service --url: Return the URL for the service.
-
-In the rear end of the pod there is a redis server. 
-
+and using the same port number of the node.  
+ 
+minikube service myapp-service --url: Return the URL for the service .
+ 
 A kubernetes service can help group the pods togather and provide a single interface to access the pods in a
-group. 
+group.  
